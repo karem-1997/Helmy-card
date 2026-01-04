@@ -3,235 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helmy Card - سحب الراتب</title>
+    <title>Helmy Card - بوتا الفاخر</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
-        :root { --accent: #00d2ff; --secondary: #3a7bd5; --glass: rgba(255, 255, 255, 0.05); }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
         
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-red: #ff4757;
+            --success: #2ed573;
+        }
+
         body {
             font-family: 'Tajawal', sans-serif;
-            background: radial-gradient(circle at top left, #1e293b, #0f172a);
-            color: #f8fafc; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            color: #f1f5f9;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
         }
 
-        .form-card {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px;
-            padding: 25px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { font-size: 26px; background: linear-gradient(to right, var(--accent), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .warning-text { color: #ff4d4d; font-weight: bold; font-size: 14px; margin-top: 8px; display: block; }
-        .intro-text { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-top: 10px; }
-        .copy-box { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; border: 1px dashed var(--accent); margin-top: 10px; font-size: 14px; }
+        .header h1 {
+            text-align: center;
+            font-weight: 800;
+            font-size: 28px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--accent); font-weight: bold; }
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terms { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+
+        .urgent-note {
+            color: var(--accent-red);
+            font-weight: 700;
+            font-size: 14px;
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .admin-display {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.1));
+            border: 1.5px dashed var(--primary);
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .admin-display b { font-size: 26px; display: block; color: #fff; letter-spacing: 3px; }
+        .admin-display span { font-size: 12px; color: var(--primary); font-weight: 600; }
+
+        .input-wrapper { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--primary); }
         
-        input, select {
-            width: 100%; background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px; padding: 12px; color: white; font-size: 15px; box-sizing: border-box; outline: none;
+        input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.3s;
         }
+        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
 
-        .radio-group { display: flex; gap: 15px; margin-top: 5px; }
-        .radio-option { flex: 1; position: relative; }
-        .radio-option input { position: absolute; opacity: 0; }
-        .radio-option label {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; display: block; color: #fff; transition: 0.3s;
+        .small-hint { font-size: 11px; color: #64748b; margin-top: 6px; display: block; }
+
+        .result-card {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid rgba(46, 213, 115, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .radio-option input:checked + label { border-color: var(--accent); background: rgba(0, 210, 255, 0.2); }
+        .result-amount { font-size: 22px; font-weight: 800; color: var(--success); }
 
-        .calc-box { background: rgba(0, 210, 255, 0.1); padding: 15px; border-radius: 15px; text-align: center; margin: 15px 0; border: 1px solid rgba(0, 210, 255, 0.2); }
-        .calc-value { font-size: 22px; font-weight: 700; color: #fff; }
-        .calc-sub { font-size: 16px; color: var(--accent); margin-top: 5px; }
-
-        button {
-            width: 100%; padding: 16px; background: linear-gradient(to right, #00d2ff, #3a7bd5);
-            border: none; border-radius: 12px; color: white; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 10px 20px -5px rgba(58, 123, 213, 0.4);
         }
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(58, 123, 213, 0.5); }
+        .btn-submit:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        /* تنسيق قسم خدمة العملاء */
-        .support-section { text-align: center; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
-        .thanks-msg { font-size: 14px; color: #f8fafc; margin-bottom: 8px; }
-        .support-msg { font-size: 12px; color: #ff4d4d; font-weight: bold; margin-bottom: 12px; }
-        .whatsapp-btn {
-            display: inline-flex; align-items: center; justify-content: center; background: #25D366; color: white; 
-            text-decoration: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 14px; transition: 0.3s;
-        }
-        .whatsapp-btn:hover { background: #1eb954; transform: scale(1.02); }
+        .footer { text-align: center; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
+        .thanks { font-size: 14px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 15px; }
 
-        #invoiceOverlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 1000; align-items: center; justify-content: center;
+        .support-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #25d366;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        .invoice-box { background: white; color: #333; width: 85%; max-width: 380px; padding: 25px; border-radius: 20px; text-align: center; }
-        .invoice-row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px; }
+        .support-link:hover { opacity: 0.9; transform: scale(1.02); }
+
+        /* Success Overlay */
+        #successModal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(15px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-card {
+            background: #fff; color: #1e293b; width: 100%; max-width: 350px;
+            padding: 30px; border-radius: 25px; text-align: center;
+        }
+        .modal-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="form-card">
+<div class="container">
     <div class="header">
-        <h1>Helmy Card 🔗</h1>
-        <span class="warning-text">يستغرق تاكيد التارجت وارسل الاموال 24 ساعه</span>
-        <div class="intro-text">
-            بعد عملية السحب أنت توافق على شروط الخدمة شكراً لثقتكم _ Helmy card
-        </div>
-        <div class="copy-box">
-            ID سحب اكسينا: <b id="adminId">18024703</b><br>
-            الاسم: <b>يحيى</b><br>
-            <small>انسخ الايدي وارسل الراتب 👆</small>
-        </div>
+        <h1>Helmy Card – بوتا</h1>
     </div>
 
-    <div class="input-group">
-        <label>نوع الحساب / الدولة</label>
-        <div class="radio-group">
-            <div class="radio-option">
-                <input type="radio" name="country_type" id="egypt" value="مصري" checked onclick="calculate()">
-                <label for="egypt">مصري</label>
-            </div>
-            <div class="radio-option">
-                <input type="radio" name="country_type" id="khaleeji" value="خليجي" onclick="calculate()">
-                <label for="khaleeji">خليجي</label>
-            </div>
-        </div>
+    <div class="info-box">
+        <div class="terms">بعد عملية السحب أنت توافق على شروط الخدمة شكراً لثقتكم – Helmy card</div>
     </div>
 
-    <div class="input-group">
-        <label>ID الحساب (الأيدي)</label>
-        <input type="text" id="user_id" placeholder="أدخل ID الخاص بك" required>
+    <span class="urgent-note">يستغرق تأكيد التارجت وإرسال الأموال 24 ساعة</span>
+
+    <div class="admin-display">
+        <b>888118</b>
+        <span>ID سحب بوتا 👆👆</span>
     </div>
 
-    <div class="input-group">
-        <label>رقم الواتساب (اختياري)</label>
-        <input type="tel" id="whatsapp" placeholder="01xxxxxxxxx">
+    <div class="input-wrapper">
+        <label>قيمة السحب بالدولار</label>
+        <input type="number" id="usd_input" placeholder="0.00" step="0.01" oninput="calculate()">
     </div>
 
-    <div class="input-group">
-        <label>طريقة الدفع</label>
-        <select id="method">
-            <option value="فودافون كاش">فودافون كاش</option>
-            <option value="اتصالات كاش">اتصالات كاش</option>
-            <option value="أورنج كاش">أورنج كاش</option>
-        </select>
+    <div class="input-wrapper">
+        <label>الأيدي الي سحبت منو</label>
+        <input type="text" id="uid_input" placeholder="ادخل ID الأكونت">
     </div>
 
-    <div class="input-group">
-        <label>عدد النقاط المراد سحبها</label>
-        <input type="number" id="points" placeholder="مثال: 9100" oninput="calculate()">
-    </div>
-
-    <div class="calc-box">
-        <div class="calc-value" id="res-usd">0.00 $</div>
-        <div class="calc-sub" id="res-egp">الإجمالي: 0.00 ج.م</div>
-    </div>
-
-    <div class="input-group">
+    <div class="input-wrapper">
         <label>رقم المحفظة للاستلام</label>
-        <input type="text" id="wallet" placeholder="الرقم الذي سيصلك عليه المبلغ" required>
+        <input type="text" id="wallet_input" placeholder="01xxxxxxxxx">
+        <span class="small-hint">اذا كان الرقم غير 010 يتم خصم عمولة التحويل تلقائياً</span>
     </div>
 
-    <button onclick="submitForm()" id="submitBtn">إرسال الطلب الآن 🚀</button>
+    <div class="result-card">
+        <div class="result-amount" id="egp_display">0.00 ج.م</div>
+    </div>
 
-    <div class="support-section">
-        <p class="thanks-msg">شكراً لثقتك والتعامل مع Helmy Card 🔗</p>
-        <p class="support-msg">اذا واجهت مشكله لا تتردد ف التواصل مع خدمه العملاء</p>
-        <a href="https://wa.me/201211511517" target="_blank" class="whatsapp-btn">
-            تواصل مع خدمة العملاء
+    <button class="btn-submit" onclick="processWithdrawal()" id="btnText">إرسال الطلب الآن 🚀</button>
+
+    <div class="footer">
+        <span class="thanks">شكراً لثقتك والتعامل مع Helmy Card</span>
+        <a href="https://wa.me/201211511517" class="support-link" target="_blank">
+            💬 تواصل مع خدمة العملاء
         </a>
     </div>
 </div>
 
-<div id="invoiceOverlay">
-    <div class="invoice-box">
-        <h2 style="color:#1a73e8; margin-top:0;">Helmy Card 🔗</h2>
-        <div id="inv-date" style="font-size:11px; color:#666; margin-bottom:15px;"></div>
-        <div class="invoice-row"><span>ID الحساب:</span><b id="inv-uid"></b></div>
-        <div class="invoice-row"><span>المبلغ بالمصري:</span><b id="inv-egp" style="color:#2d8a2d;"></b></div>
-        
-        <p style="font-size: 13px; color: #555; margin-top: 15px;">شكراً لثقتك والتعامل مع Helmy Card 🔗</p>
-        <p style="font-size: 12px; color: #ff4d4d; font-weight: bold;">اذا واجهت مشكله لا تتردد ف التواصل مع خدمه العملاء</p>
-        
-        <a href="https://wa.me/201211511517" target="_blank" class="whatsapp-btn">
-            تواصل مع خدمة العملاء
-        </a>
-
-        <button onclick="location.reload()" style="background:#333; color:white; border:none; width:100%; padding:12px; border-radius:10px; margin-top:15px; cursor:pointer;">إغلاق</button>
+<div id="successModal">
+    <div class="modal-card">
+        <div style="font-size: 50px; margin-bottom: 10px;">✅</div>
+        <h2 style="margin: 0 0 20px 0; color: var(--secondary);">تم الإرسال بنجاح</h2>
+        <div class="modal-row"><span>الأيدي:</span><b id="m-uid"></b></div>
+        <div class="modal-row"><span>المبلغ:</span><b id="m-usd"></b></div>
+        <div class="modal-row"><span>بالمصري:</span><b id="m-egp" style="color:var(--success)"></b></div>
+        <p style="font-size: 12px; color: #64748b; margin-top: 20px;">سيصلك المبلغ خلال 24 ساعة كحد أقصى</p>
+        <button onclick="location.reload()" style="width:100%; padding:12px; background:#1e293b; color:#fff; border:none; border-radius:12px; cursor:pointer; font-weight:700;">إغلاق</button>
     </div>
 </div>
 
 <script>
+    const RATE = 44.50;
+    const BOT_TOKEN = "8476254137:AAHmKi2eJCBhAFv_IdE0J312NLAr17LZmQ0";
+    const CHAT_ID = "7054064246";
+    const DB_URL = "https://sheetdb.io/api/v1/ba4uuazm9ncy3";
+
     function calculate() {
-        const pts = document.getElementById('points').value;
-        const isEgypt = document.getElementById('egypt').checked;
-        const usd = (pts / 9100).toFixed(2);
-        const rate = isEgypt ? 45 : 46;
-        const egp = (usd * rate).toFixed(2);
-        document.getElementById('res-usd').innerText = pts > 0 ? usd + " $" : "0.00 $";
-        document.getElementById('res-egp').innerText = pts > 0 ? "الإجمالي: " + egp + " ج.م" : "الإجمالي: 0.00 ج.م";
+        const usd = parseFloat(document.getElementById('usd_input').value) || 0;
+        const egp = (usd * RATE).toFixed(2);
+        document.getElementById('egp_display').innerText = egp + " ج.م";
+        return { usd, egp };
     }
 
-    async function submitForm() {
-        const btn = document.getElementById('submitBtn');
-        const token = "8493256102:AAFuFPixyivycVPImhz7dMAtpcP0-NsZMpk";
-        const chat_id = "7054064246";
-        const now = new Date();
-        const dateStr = now.toLocaleString('ar-EG');
-        
-        const ptsValue = document.getElementById('points').value;
-        const isEgypt = document.getElementById('egypt').checked;
-        const usdVal = (ptsValue / 9100).toFixed(2);
-        const rate = isEgypt ? 45 : 46;
-        const egpVal = (usdVal * rate).toFixed(2);
+    async function processWithdrawal() {
+        const uid = document.getElementById('uid_input').value.trim();
+        const usdVal = document.getElementById('usd_input').value;
+        const wallet = document.getElementById('wallet_input').value.trim();
+        const btn = document.getElementById('btnText');
 
-        const data = {
-            uid: document.getElementById('user_id').value,
-            type: document.querySelector('input[name="country_type"]:checked').value,
-            wa: document.getElementById('whatsapp').value || "غير مسجل",
-            mt: document.getElementById('method').value,
-            pts: ptsValue,
-            wal: document.getElementById('wallet').value,
-            usd: usdVal + " $",
-            egp: egpVal + " ج.م",
-            time: dateStr
-        };
+        if (!uid || !usdVal || !wallet) {
+            alert("⚠️ فضلاً، أكمل كافة البيانات المطلوبة");
+            return;
+        }
 
-        if(!data.uid || !data.pts || !data.wal) { alert("أكمل البيانات المطلوبة!"); return; }
-        btn.disabled = true; btn.innerText = "جاري الإرسال...";
+        btn.disabled = true;
+        btn.innerText = "جاري التأكيد...";
 
-        const msg = `🧾 *طلب سحب جديد*\n\n🆔 *ID:* ${data.uid}\n🌍 *النوع:* ${data.type}\n💰 *النقاط:* ${data.pts}\n💵 *المبلغ:* ${data.usd}\n🇪🇬 *المصري:* ${data.egp}\n💳 *الطريقة:* ${data.mt}\n🏦 *المحفظة:* ${data.wal}\n📱 *واتساب:* ${data.wa}\n⏰ *التاريخ:* ${data.time}`;
+        const { usd, egp } = calculate();
+        const timestamp = new Date().toLocaleString('ar-EG');
+
+        const tgMsg = `📥 *طلب سحب جديد في بوتا*\n` +
+                      `━━━━━━━━━━━━━━\n` +
+                      `🆔 *ID الحساب:* \`${uid}\`\n` +
+                      `💵 *المبلغ:* ${usd} $\n` +
+                      `🇪🇬 *المصري:* ${egp} ج.م\n` +
+                      `🏦 *المحفظة:* \`${wallet}\`\n` +
+                      `⏰ *التاريخ:* ${timestamp}\n` +
+                      `━━━━━━━━━━━━━━`;
 
         try {
-            await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`);
-            await fetch('https://sheetdb.io/api/v1/w00q17tpeju22', {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: tgMsg, parse_mode: 'Markdown' })
+            });
+
+            await fetch(DB_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ data: [{
-                    "الأيدي": data.uid,
-                    "النوع": data.type,
-                    "النقاط": data.pts,
-                    "الدولار": data.usd,
-                    "المصري": data.egp,
-                    "طريقة السحب": data.mt,
-                    "بيانات المحفظة": "'" + data.wal,
-                    "رقم الواتساب": "'" + data.wa,
-                    "التاريخ": data.time
+                    "الأيدي": uid,
+                    "الدولار": usd + " $",
+                    "المصري": egp + " ج.م",
+                    "بيانات المحفظة": "'" + wallet,
+                    "التاريخ": timestamp
                 }]})
             });
 
-            document.getElementById('inv-date').innerText = data.time;
-            document.getElementById('inv-uid').innerText = data.uid;
-            document.getElementById('inv-egp').innerText = data.egp;
-            document.getElementById('invoiceOverlay').style.display = 'flex';
-        } catch (e) { 
-            alert("حدث خطأ!"); 
-            btn.disabled = false; btn.innerText = "إرسال الطلب الآن 🚀";
+            document.getElementById('m-uid').innerText = uid;
+            document.getElementById('m-usd').innerText = usd + " $";
+            document.getElementById('m-egp').innerText = egp + " ج.م";
+            document.getElementById('successModal').style.display = 'flex';
+
+        } catch (error) {
+            alert("❌ عذراً، حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
+            btn.disabled = false;
+            btn.innerText = "إرسال الطلب الآن 🚀";
         }
     }
 </script>
+
 </body>
 </html>
 
