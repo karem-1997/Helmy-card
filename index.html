@@ -3,206 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helmy Card | المنصة الأقوى</title>
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Tajawal:wght@500;800;900&family=Nosifer&display=swap" rel="stylesheet">
+    <title>Helmy Card - سحب الراتب</title>
     <style>
-        :root { --red: #ff0000; --blue: #00bcff; --gold: #ffcc00; --silver: #e0e0e0; --green: #25d366; }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
         
+        :root {
+            --gold: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 70%, #fbf5b7 100%);
+            --bg: #050505;
+            --card-bg: #0d0d0d;
+            --text-gold: #fcf6ba;
+        }
+
         body {
-            background: #000 url('https://i.ibb.co/WNjyR8yc/IMG-20260122-WA0089.jpg') no-repeat center center fixed;
-            background-size: cover; color: #fff; font-family: 'Almarai', sans-serif; margin: 0; overflow-x: hidden;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle at top left, #1a1a1a, #050505);
+            color: #f8fafc; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;
         }
 
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: -1; }
-
-        /* --- واجهة الدخول --- */
-        #landingPage {
-            position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); z-index: 5000; text-align: center; transition: 0.8s;
-        }
-        
-        .logo-container {
+        .form-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(191, 149, 63, 0.3);
+            border-radius: 30px;
+            padding: 30px; width: 100%; max-width: 480px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
             position: relative;
-            width: fit-content;
-            padding: 2px;
-            background: linear-gradient(90deg, var(--red), transparent, var(--red));
-            background-size: 200% 200%;
-            border-radius: 20px;
-            animation: borderGlow 5s linear infinite, floatAnim 3s ease-in-out infinite;
-            margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
 
-        .new-logo-rect {
-            display: block;
-            width: 200px; 
-            height: auto; 
-            border-radius: 17px;
-            object-fit: contain;
-            mix-blend-mode: screen; 
-            filter: contrast(110%) brightness(110%);
-            animation: pulseAnim 2s ease-in-out infinite;
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { 
+            font-size: 32px; font-weight: 900; margin: 0;
+            background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        @keyframes borderGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes floatAnim {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes pulseAnim {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .brand-name { font-family: 'Nosifer', sans-serif; color: var(--silver); font-size: 38px; text-shadow: 0 0 20px var(--red); animation: textGlow 2s infinite alternate; }
+        .warning-text { color: #ff4d4d; font-weight: bold; font-size: 14px; margin-top: 8px; display: block; }
+        .intro-text { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-top: 10px; }
         
-        .hype-text-big { color: var(--gold); font-size: 22px; font-weight: 900; display: block; margin: 15px 0 10px; animation: pulse 1s infinite; }
+        .copy-box { 
+            background: rgba(191, 149, 63, 0.08); padding: 15px; border-radius: 15px; 
+            border: 1px dashed #bf953f; margin-top: 15px; font-size: 14px; cursor: pointer;
+            transition: 0.3s;
+        }
+        .copy-box:hover { background: rgba(191, 149, 63, 0.15); }
+        .copy-box b { color: var(--text-gold); font-size: 20px; letter-spacing: 1px; }
 
-        .btn-wrapper {
-            position: relative; width: 260px; height: 85px; display: flex; justify-content: center; align-items: center;
-            background: #000; border-radius: 50px; overflow: hidden; cursor: pointer; 
-            box-shadow: 0 10px 0 #4a0000, 0 15px 25px rgba(255, 0, 0, 0.4);
-            transition: 0.2s;
-        }
-        .btn-wrapper::before { 
-            content: ""; position: absolute; width: 150%; height: 150%; 
-            background: conic-gradient(transparent, transparent, transparent, var(--red)); 
-            animation: rotateGlow 8s linear infinite;
-        }
-        .btn-wrapper::after { 
-            content: "Helmy Card"; position: absolute; inset: 2px; background: #111; border-radius: 46px; 
-            display: flex; justify-content: center; align-items: center; font-family: 'Nosifer', sans-serif; 
-            font-size: 20px; color: #fff; z-index: 2; text-shadow: 0 0 15px var(--red);
-        }
-        .btn-wrapper:active { transform: translateY(5px); box-shadow: 0 5px 0 #4a0000; }
+        .input-group { margin-bottom: 18px; text-align: right; }
+        label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-gold); font-weight: bold; }
+        .hint-text { color: #ff4d4d; font-size: 11px; margin-top: 5px; display: block; font-weight: bold; }
 
-        /* --- المحتوى الرئيسي --- */
-        #mainContent { display: none; opacity: 0; min-height: 100vh; flex-direction: column; align-items: center; padding: 30px 20px; box-sizing: border-box; }
+        input, select {
+            width: 100%; background: #151515; border: 1px solid rgba(191, 149, 63, 0.2);
+            border-radius: 12px; padding: 12px; color: white; font-size: 15px; box-sizing: border-box; outline: none;
+            transition: 0.3s; font-family: 'Tajawal', sans-serif;
+        }
+        input:focus { border-color: #fcf6ba; box-shadow: 0 0 10px rgba(191, 149, 63, 0.2); }
         
-        .container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 20px; }
-
-        .glow-btn-box {
-            position: relative; width: 100%; height: 72px; border-radius: 16px; overflow: hidden;
-            display: flex; justify-content: center; align-items: center; 
-            box-shadow: 0 8px 0 #000, 0 10px 20px rgba(0,0,0,0.6);
-            transition: 0.2s;
-        }
-        
-        .glow-btn-box::before {
-            content: ""; position: absolute; width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, transparent, var(--border-color, var(--red)));
-            animation: rotateGlow 9s linear infinite;
-            z-index: 1;
+        .file-label {
+            display: block; background: #1a1a1a; border: 2px dashed rgba(191, 149, 63, 0.5);
+            border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; color: #fcf6ba; font-weight: bold;
         }
 
-        .inner-btn {
-            position: absolute; inset: 3px; background: #0c0c0c; border-radius: 13px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 2; color: #fff; text-decoration: none; font-weight: 800; font-size: 15px; 
-            border: 1px solid rgba(255,255,255,0.05);
+        .calc-box { 
+            background: rgba(191, 149, 63, 0.05); padding: 15px; border-radius: 15px; 
+            text-align: center; margin: 15px 0; border: 1px solid rgba(191, 149, 63, 0.1); 
+        }
+        .calc-value { font-size: 22px; font-weight: 700; color: #fff; }
+
+        button#submitBtn {
+            width: 100%; padding: 16px; background: var(--gold);
+            border: none; border-radius: 12px; color: #000; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.3s;
         }
 
-        .glow-btn-box:active { transform: translateY(4px); box-shadow: 0 4px 0 #000; }
+        /* لوحة الإدارة */
+        .admin-trigger { margin-top: 20px; text-align: center; border-top: 1px solid #222; padding-top: 10px; }
+        .admin-btn { color: #444; font-size: 11px; cursor: pointer; text-decoration: underline; }
+        .admin-panel { display: none; background: #000; border: 1px solid #bf953f; border-radius: 20px; padding: 20px; margin-top: 15px; text-align: right; }
+        .stat-item { background: #0a0a0a; border: 1px solid #222; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
+        .stat-item span { color: #888; font-size: 11px; display: block; }
+        .stat-item b { color: var(--text-gold); font-size: 15px; }
 
-        .btn-hint { font-size: 11px; text-align: center; margin-top: -15px; font-weight: bold; color: var(--silver); opacity: 0.8; }
-
-        .trust-section {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; padding: 20px; margin-top: 10px; text-align: center;
+        #invoiceOverlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; padding: 20px;
         }
-        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .feature-item { background: rgba(0,0,0,0.6); padding: 10px; border-radius: 12px; border-bottom: 3px solid var(--red); font-size: 12px; }
-        .feature-item b { display: block; color: var(--blue); margin-bottom: 3px; }
+        .invoice-box { 
+            background: #0d0d0d; color: #fff; width: 100%; max-width: 400px; padding: 30px; 
+            border-radius: 25px; text-align: center; border: 2px solid #bf953f; 
+        }
+        .inv-header { font-size: 24px; font-weight: 900; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        .inv-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(191, 149, 63, 0.1); padding: 12px 0; font-size: 14px; }
+        .inv-label { color: #94a3b8; }
+        .inv-value { color: #fcf6ba; font-weight: bold; }
+        .thanks-note { margin-top: 25px; font-size: 13px; color: #fcf6ba; line-height: 1.6; font-style: italic; }
 
-        @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
-        @keyframes textGlow { from { text-shadow: 0 0 10px var(--red); } to { text-shadow: 0 0 35px var(--red), 0 0 50px var(--red); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        #copyToast {
+            visibility: hidden; min-width: 100px; background-color: #bf953f; color: #000; text-align: center;
+            border-radius: 50px; padding: 8px; position: fixed; z-index: 1001; bottom: 30px; left: 50%;
+            transform: translateX(-50%); font-size: 12px; font-weight: bold;
+        }
+        #copyToast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 1.5s; }
     </style>
 </head>
 <body>
 
-    <div id="landingPage">
-        <div class="logo-container">
-            <img src="https://i.ibb.co/KcBy799V/IMG-20260124-WA0104.jpg" class="new-logo-rect" alt="Helmy Card Logo">
-        </div>
-        
-        <h1 class="brand-name">Helmy Card</h1>
-        <span class="hype-text-big">استعد للسيطرة على اللعبة!</span>
-        <p style="font-size:14px; color:#ccc; margin-bottom:25px;">أمان مطلق.. سرعة خيالية.. ومصداقية ملوك.</p>
-        
-        <div onclick="enterApp()">
-            <div class="btn-wrapper"></div>
-            <p style="font-size:12px; margin-top:15px; color:var(--silver); font-weight: bold;">اضغط على الاسم لفتح بوابة القوة</p>
+<div class="form-card">
+    <div class="header">
+        <h1>Helmy Card 🔗</h1>
+        <span class="warning-text">يستغرق تأكيد التارجت وإرسال الأموال 24 ساعة</span>
+        <div class="intro-text">بعد عملية السحب أنت توافق على شروط الخدمة شكراً لثقتكم _ Helmy Card 🔗</div>
+        <div class="copy-box" onclick="copyId()">
+            ID سحب Helmy: <b id="adminId">800050</b><br>
+            الاسم: <b>Helmy fire</b><br>
+            <small>اضغط هنا لنسخ الايدي وارسل الراتب 👆</small>
         </div>
     </div>
 
-    <div id="mainContent">
-        <h1 style="font-family:'Nosifer'; font-size: 32px; color: var(--silver); margin: 0; text-shadow: 0 0 15px var(--red);">Helmy Card</h1>
-        <p style="color:var(--gold); font-weight:900; margin: 10px 0 25px 0;">شحن الملوك وسحب المحترفين</p>
-
-        <div class="container">
-            <div class="glow-btn-box" style="--border-color: var(--blue);">
-                <a href="https://helmy-card.com/" class="inner-btn">متجرنا الالكتروني لشحن جميع التطبيقات</a>
-            </div>
-            <p class="btn-hint">شحن فوري وآمن لجميع الألعاب العالمية 🚀</p>
-
-            <div class="glow-btn-box">
-                <a href="https://xena-group-helmy.netlify.app" class="inner-btn">سحب رواتب اكسينا</a>
-            </div>
-            <p class="btn-hint">استلم أرباحك بأفضل سعر صرف في السوق 💸</p>
-
-            <div class="glow-btn-box">
-                <a href="https://pota-live-helmy-card.netlify.app/" class="inner-btn">سحب رواتب بوتا</a>
-            </div>
-            <p class="btn-hint">نضمن لك وصول راتبك في دقائق معدودة 🔒</p>
-
-            <div class="glow-btn-box">
-                <a href="https://karak-helmy-card.netlify.app" class="inner-btn">سحب رواتب كرك</a>
-            </div>
-            <p class="btn-hint">ثقة لا تنتهي ومصداقية تتحدث عن نفسها 👑</p>
-
-            <div class="glow-btn-box">
-                <a href="https://junko-helmy-card.netlify.app/" class="inner-btn">سحب رواتب جانكو</a>
-            </div>
-            <p class="btn-hint">الخيار الأول والآمن لجميع وكالات جانكو 🏦</p>
-
-            <div class="glow-btn-box" style="--border-color: var(--green);">
-                <a href="https://wa.me/201211511517" class="inner-btn" style="color: var(--green);">تواصل مع خدمة العملاء</a>
-            </div>
-            <p class="btn-hint">فريق الدعم الفني معك على مدار الساعة 📞</p>
-
-            <div class="glow-btn-box" style="--border-color: #1877f2;">
-                <a href="https://www.facebook.com/share/16Jnr1rrGn/" class="inner-btn" style="color: #1877f2;">فيس بوك</a>
-            </div>
-            <p class="btn-hint">تابعنا لتكون أول من يعرف العروض الجديدة 🔵</p>
-
-            <div class="trust-section">
-                <h3 style="color:var(--gold); margin-bottom:15px;">لماذا نحن الأفضل بلا منازع؟</h3>
-                <div class="feature-grid">
-                    <div class="feature-item"><b>أمان حديدي</b>حسابك محمي بنظام تشفير عالمي</div>
-                    <div class="feature-item"><b>سرعة البرق</b>استلم شحنك في أقل من 3 دقائق</div>
-                    <div class="feature-item"><b>أوفر سعر</b>تحدي الأسعار يبدأ من عندنا</div>
-                    <div class="feature-item"><b>دعم ملكي</b>فريقنا معك لحظة بلحظة</div>
-                </div>
-                <p style="font-size:12px; margin-top:15px; font-weight:bold;">انضم لآلاف العملاء الذين وضعوا ثقتهم في "حلمي كارد"</p>
-            </div>
-        </div>
+    <div class="input-group">
+        <label>🆔 الي سحبت منو id</label>
+        <input type="text" id="user_id" placeholder="أدخل ID الخاص بك" required>
     </div>
 
-    <script>
-        function enterApp() {
-            document.getElementById('landingPage').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('landingPage').style.display = 'none';
-                let main = document.getElementById('mainContent');
-                main.style.display = 'flex';
-                setTimeout(() => { main.style.opacity = '1'; }, 50);
-            }, 800);
-        }
-    </script>
+    <div class="input-group">
+        <label>👤 اسم الوكيل (اختياري)</label>
+        <input type="text" id="agent_name" placeholder="أدخل اسم الوكيل إن وجد">
+    </div>
+
+    <div class="input-group">
+        <label>طريقة الدفع</label>
+        <select id="method" onchange="calculate()">
+            <option value="فودافون كاش">فودافون كاش</option>
+            <option value="اتصالات كاش">اتصالات كاش</option>
+            <option value="أورنج كاش">أورنج كاش</option>
+            <option value="كود الوكيل في المنصة">كود الوكيل في المنصة (سعر خاص)</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>الدولار</label>
+        <input type="number" id="dollars" placeholder="أدخل عدد الدولارات" oninput="calculate()" required>
+    </div>
+
+    <div class="calc-box">
+        <div class="calc-value" id="res-egp">الإجمالي: 0.00 ج.م</div>
+    </div>
+
+    <div class="input-group">
+        <label>رقم الاستلام</label>
+        <input type="text" id="wallet" placeholder="الرقم الذي سيصلك عليه المبلغ" required>
+        <span class="hint-text">اذا كان الرقم غير 010 يتم خصم عمولة التحويل تلقائياً.</span>
+    </div>
+
+    <div class="input-group">
+        <label>إرفاق صورة التحويل (إجباري)</label>
+        <label for="screenshot" class="file-label" id="fileLabel">
+            <span id="labelText">📸 اضغط لاختيار صورة التحويل</span>
+            <input type="file" id="screenshot" accept="image/*" style="display:none" onchange="updateLabel()" required>
+        </label>
+    </div>
+
+    <button onclick="submitForm()" id="submitBtn">إرسال الطلب الآن 🚀</button>
+
+    <div class="admin-trigger">
+        <span class="admin-btn" onclick="openAdminPanel()">⚙️ لوحة المراقبة (الفريق)</span>
+        <div id="adminPanel" class="admin-panel">
+            <div id="adminClock" style="font-size:10px; color:#555; text-align:center; margin-bottom:10px;"></div>
+            <div class="stat-item"><span>طلبات الشهر (شيت 1)</span> <b id="s1-mon">0</b></div>
+            <div class="stat-item"><span>طلبات الشهر (شيت 2)</span> <b id="s2-mon">0</b></div>
+            <div class="stat-item" style="border-color: #bf953f;"><span>إجمالي اليوم</span> <b id="day-tot">0</b></div>
+            <div style="font-size:9px; color:#444; text-align:center;">التحويل التلقائي مفعل عند 498 طلب</div>
+        </div>
+    </div>
+</div>
+
+<div id="copyToast">تم نسخ الأيدي بنجاح ✅</div>
+
+<div id="invoiceOverlay">
+    <div class="invoice-box">
+        <div class="inv-header">فاتورة سحب راتب ✅</div>
+        <div class="inv-item"><span class="inv-label">ID الحساب:</span> <span class="inv-value" id="inv-uid"></span></div>
+        <div class="inv-item"><span class="inv-label">اسم الوكيل:</span> <span class="inv-value" id="inv-agent"></span></div>
+        <div class="inv-item"><span class="inv-label">المبلغ بالدولار:</span> <span class="inv-value" id="inv-usd"></span></div>
+        <div class="inv-item"><span class="inv-label">المبلغ بالمصري:</span> <span class="inv-value" id="inv-egp"></span></div>
+        <div class="inv-item"><span class="inv-label">طريقة الاستلام:</span> <span class="inv-value" id="inv-method"></span></div>
+        <div class="inv-item"><span class="inv-label">اليوم:</span> <span class="inv-value" id="inv-day"></span></div>
+        <div class="inv-item"><span class="inv-label">التاريخ:</span> <span class="inv-value" id="inv-time" style="font-size: 11px;"></span></div>
+        <div class="thanks-note">شكرًا لثقتك بنا وبالتعامل مع Helmy Card 🔗<br>نتمنى لك دائماً تجربة مميزة وموفقة. ☕</div>
+        <button onclick="location.reload()" style="background:var(--gold); color:#000; border:none; width:100%; padding:15px; border-radius:12px; cursor:pointer; font-weight: bold; margin-top: 20px;">إغلاق وحفظ</button>
+    </div>
+</div>
+
+<script>
+    const BOT_TOKEN = "8571615952:AAGDBzrw8hRwDGS7u2aa-dpLEsDOufEprP4";
+    const CHAT_ID = "1682899853";
+    const S1_URL = "https://sheetdb.io/api/v1/m5t10sp8hf9e6";
+    const S2_URL = "https://sheetdb.io/api/v1/7a0j561hvwvfc";
+    const LIMIT = 498;
+
+    function updateLabel() {
+        const file = document.getElementById('screenshot').files[0];
+        if(file) document.getElementById('labelText').innerText = "✅ تم اختيار: " + file.name;
+    }
+
+    function calculate() {
+        const usd = document.getElementById('dollars').value;
+        const rate = (document.getElementById('method').value.includes("كود")) ? 46.50 : 45;
+        const egp = (usd * rate).toFixed(2);
+        document.getElementById('res-egp').innerText = usd > 0 ? "الإجمالي: " + egp + " ج.م" : "الإجمالي: 0.00 ج.م";
+    }
+
+    function copyId() {
+        navigator.clipboard.writeText(document.getElementById('adminId').innerText).then(() => {
+            const toast = document.getElementById("copyToast"); toast.className = "show";
+            setTimeout(() => { toast.className = ""; }, 2000);
+        });
+    }
+
+    async function openAdminPanel() {
+        if(prompt("كلمة سر الإدارة:") !== "1234") return;
+        document.getElementById('adminPanel').style.display = 'block';
+        const now = new Date();
+        document.getElementById('adminClock').innerText = "توقيت النظام: " + now.toLocaleString('ar-EG');
+        try {
+            const [r1, r2] = await Promise.all([fetch(S1_URL), fetch(S2_URL)]);
+            const d1 = await r1.json(); const d2 = await r2.json();
+            const curMonth = now.getMonth() + 1;
+            const todayStr = now.toLocaleDateString('en-GB');
+            let s1M = 0, s2M = 0, today = 0;
+            d1.forEach(r => {
+                if(!r["التاريخ"]) return;
+                const dPart = r["التاريخ"].split(',')[0].trim();
+                if(parseInt(dPart.split('/')[1]) === curMonth) s1M++;
+                if(dPart === todayStr) today++;
+            });
+            d2.forEach(r => {
+                if(!r["التاريخ"]) return;
+                const dPart = r["التاريخ"].split(',')[0].trim();
+                if(parseInt(dPart.split('/')[1]) === curMonth) s2M++;
+                if(dPart === todayStr) today++;
+            });
+            document.getElementById('s1-mon').innerText = s1M;
+            document.getElementById('s2-mon').innerText = s2M;
+            document.getElementById('day-tot').innerText = today;
+        } catch(e) {}
+    }
+
+    async function submitForm() {
+        const btn = document.getElementById('submitBtn');
+        const uid = document.getElementById('user_id').value;
+        const agent = document.getElementById('agent_name').value || "لا يوجد";
+        const usd = document.getElementById('dollars').value;
+        const wallet = document.getElementById('wallet').value;
+        const photo = document.getElementById('screenshot').files[0];
+        const method = document.getElementById('method').value;
+
+        if(!uid || !usd || !wallet || !photo) return alert("يرجى إكمال جميع الخانات وإرفاق الصورة!");
+
+        btn.disabled = true;
+        btn.innerText = "جاري الحماية والإرسال...";
+
+        try {
+            const res1 = await fetch(S1_URL);
+            const data1 = await res1.json();
+            const now = new Date();
+            const curMonth = now.getMonth() + 1;
+
+            // منع التكرار (5 أيام)
+            const fiveDaysAgo = new Date(); fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+            const isDup = data1.some(r => {
+                if(!r["التاريخ"]) return false;
+                const p = r["التاريخ"].split(',')[0].split('/');
+                return r["الأيدي"] === uid && new Date(p[2], p[1]-1, p[0]) >= fiveDaysAgo;
+            });
+
+            if(isDup) {
+                alert("عذراً، هذا الأيدي سحب خلال الـ 5 أيام الماضية.");
+                btn.disabled = false; btn.innerText = "إرسال الطلب الآن 🚀";
+                return;
+            }
+
+            // تحديد الشيت النشط بناء على طلبات الشهر في شيت 1
+            const s1MonthCount = data1.filter(r => {
+                if(!r["التاريخ"]) return false;
+                return parseInt(r["التاريخ"].split(',')[0].split('/')[1]) === curMonth;
+            }).length;
+
+            const activeUrl = s1MonthCount >= LIMIT ? S2_URL : S1_URL;
+            const dayName = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][now.getDay()];
+            const dateStr = now.toLocaleDateString('en-GB') + ", " + now.toLocaleTimeString('ar-EG');
+            const rate = (method.includes("كود")) ? 46.50 : 45;
+            const egpVal = (usd * rate).toFixed(2);
+
+            // إرسال تيليجرام
+            const fd = new FormData();
+            fd.append('chat_id', CHAT_ID); fd.append('photo', photo);
+            fd.append('caption', `🧾 *طلب سحب جديد Helmy Card*\n\n🆔 *ID:* \`${uid}\`\n👤 *الوكيل:* ${agent}\n💵 *المبلغ:* ${usd} $\n🇪🇬 *المصري:* ${egpVal} ج.م\n💳 *الطريقة:* ${method}\n🏦 *المحفظة:* ${wallet}\n📅 *اليوم:* ${dayName}\n⏰ *التاريخ:* ${dateStr}`);
+            fd.append('parse_mode', 'Markdown');
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+
+            // إرسال للشيت
+            await fetch(activeUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data: [{
+                    "الأيدي": uid, "اسم الوكيل": agent, "الدولار": usd + " $",
+                    "المصري": egpVal + " ج.م", "طريقة السحب": method,
+                    "بيانات المحفظة": "'" + wallet, "التاريخ": dateStr, "اليوم": dayName
+                }]})
+            });
+
+            // ملء الفاتورة الفخمة
+            document.getElementById('inv-uid').innerText = uid;
+            document.getElementById('inv-agent').innerText = agent;
+            document.getElementById('inv-usd').innerText = usd + " $";
+            document.getElementById('inv-egp').innerText = egpVal + " ج.م";
+            document.getElementById('inv-method').innerText = method;
+            document.getElementById('inv-day').innerText = dayName;
+            document.getElementById('inv-time').innerText = dateStr;
+            document.getElementById('invoiceOverlay').style.display = 'flex';
+
+        } catch(e) { alert("خطأ تقني!"); btn.disabled = false; }
+    }
+</script>
 </body>
 </html>
