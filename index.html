@@ -168,14 +168,22 @@
 
         let buttonsData = [];
 
-        // جلب البيانات من السحاب أول مرة
+        // --- التعديل المطلوب لضمان الرجوع لصفحة الأزرار ---
+        window.onload = function() {
+            if (sessionStorage.getItem('appEntered') === 'true') {
+                document.getElementById('landingPage').style.display = 'none';
+                let main = document.getElementById('mainContent');
+                main.style.display = 'flex';
+                main.style.opacity = '1';
+            }
+        };
+
         db.ref('helmy_links').on('value', (snap) => {
             const data = snap.val();
             if(data) {
                 buttonsData = data;
                 renderButtons();
             } else {
-                // لو السحاب فاضي، يحط الداتا الأصلية اللي في كودك
                 buttonsData = [
                     { name: "متجرنا الالكتروني لشحن جميع التطبيقات", url: "https://helmy-card.com/", color: "var(--blue)", hint: "شحن فوري وآمن لجميع الألعاب العالمية 🚀" },
                     { name: "سحب رواتب اكسينا", url: "https://helmy-ccard-xena-live.vercel.app/", color: "var(--red)", hint: "استلم أرباحك بأفضل سعر صرف في السوق 💸" },
@@ -204,6 +212,7 @@
         }
 
         function enterApp() {
+            sessionStorage.setItem('appEntered', 'true'); // حفظ حالة الدخول
             document.getElementById('landingPage').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('landingPage').style.display = 'none';
