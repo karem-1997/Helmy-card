@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helmy Card | المنصة الأقوى</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@700;800&family=Tajawal:wght@500;800;900&family=Nosifer&display=swap" rel="stylesheet">
     <style>
         :root { --red: #ff0000; --blue: #00bcff; --gold: #ffcc00; --silver: #e0e0e0; --green: #25d366; }
@@ -15,6 +19,19 @@
 
         body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: -1; }
 
+        /* --- لوحة التحكم (المخفية) --- */
+        #adminPanel {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10000;
+            padding: 20px; overflow-y: auto; direction: rtl;
+        }
+        .admin-box { max-width: 500px; margin: 0 auto; background: #111; padding: 20px; border-radius: 20px; border: 2px solid var(--red); }
+        .admin-box h2 { color: var(--red); text-align: center; font-family: 'Tajawal'; }
+        .btn-entry { background: #222; padding: 10px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #333; }
+        .admin-input { width: 100%; padding: 10px; margin: 5px 0; background: #000; border: 1px solid #444; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        .admin-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .save-btn { flex: 2; background: var(--red); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .add-btn { background: var(--blue); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 15px; }
+
         /* --- واجهة الدخول --- */
         #landingPage {
             position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -22,51 +39,25 @@
         }
         
         .logo-container {
-            position: relative;
-            width: fit-content;
-            padding: 2px;
+            position: relative; width: fit-content; padding: 2px;
             background: linear-gradient(90deg, var(--red), transparent, var(--red));
-            background-size: 200% 200%;
-            border-radius: 20px;
+            background-size: 200% 200%; border-radius: 20px;
             animation: borderGlow 5s linear infinite, floatAnim 3s ease-in-out infinite;
-            margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            margin-bottom: 25px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
         }
 
         .new-logo-rect {
-            display: block;
-            width: 200px; 
-            height: auto; 
-            border-radius: 17px;
-            object-fit: contain;
-            mix-blend-mode: screen; 
-            filter: contrast(110%) brightness(110%);
+            display: block; width: 200px; height: auto; border-radius: 17px;
+            object-fit: contain; mix-blend-mode: screen; 
             animation: pulseAnim 2s ease-in-out infinite;
-        }
-
-        @keyframes borderGlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes floatAnim {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes pulseAnim {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
 
         .brand-name { font-family: 'Nosifer', sans-serif; color: var(--silver); font-size: 38px; text-shadow: 0 0 20px var(--red); animation: textGlow 2s infinite alternate; }
         
-        .hype-text-big { color: var(--gold); font-size: 22px; font-weight: 900; display: block; margin: 15px 0 10px; animation: pulse 1s infinite; }
-
         .btn-wrapper {
             position: relative; width: 260px; height: 85px; display: flex; justify-content: center; align-items: center;
             background: #000; border-radius: 50px; overflow: hidden; cursor: pointer; 
-            box-shadow: 0 10px 0 #4a0000, 0 15px 25px rgba(255, 0, 0, 0.4);
-            transition: 0.2s;
+            box-shadow: 0 10px 0 #4a0000, 0 15px 25px rgba(255, 0, 0, 0.4); transition: 0.2s;
         }
         .btn-wrapper::before { 
             content: ""; position: absolute; width: 150%; height: 150%; 
@@ -78,35 +69,28 @@
             display: flex; justify-content: center; align-items: center; font-family: 'Nosifer', sans-serif; 
             font-size: 20px; color: #fff; z-index: 2; text-shadow: 0 0 15px var(--red);
         }
-        .btn-wrapper:active { transform: translateY(5px); box-shadow: 0 5px 0 #4a0000; }
 
         /* --- المحتوى الرئيسي --- */
         #mainContent { display: none; opacity: 0; min-height: 100vh; flex-direction: column; align-items: center; padding: 30px 20px; box-sizing: border-box; }
-        
         .container { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 20px; }
 
         .glow-btn-box {
             position: relative; width: 100%; height: 72px; border-radius: 16px; overflow: hidden;
             display: flex; justify-content: center; align-items: center; 
-            box-shadow: 0 8px 0 #000, 0 10px 20px rgba(0,0,0,0.6);
-            transition: 0.2s;
+            box-shadow: 0 8px 0 #000, 0 10px 20px rgba(0,0,0,0.6); transition: 0.2s;
         }
         
         .glow-btn-box::before {
             content: ""; position: absolute; width: 200%; height: 200%;
             background: conic-gradient(transparent, transparent, transparent, var(--border-color, var(--red)));
-            animation: rotateGlow 9s linear infinite;
-            z-index: 1;
+            animation: rotateGlow 9s linear infinite; z-index: 1;
         }
 
         .inner-btn {
             position: absolute; inset: 3px; background: #0c0c0c; border-radius: 13px;
             display: flex; justify-content: center; align-items: center;
-            z-index: 2; color: #fff; text-decoration: none; font-weight: 800; font-size: 15px; 
-            border: 1px solid rgba(255,255,255,0.05);
+            z-index: 2; color: #fff; text-decoration: none; font-weight: 800; font-size: 15px; text-align: center;
         }
-
-        .glow-btn-box:active { transform: translateY(4px); box-shadow: 0 4px 0 #000; }
 
         .btn-hint { font-size: 11px; text-align: center; margin-top: -15px; font-weight: bold; color: var(--silver); opacity: 0.8; }
 
@@ -116,24 +100,35 @@
         }
         .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .feature-item { background: rgba(0,0,0,0.6); padding: 10px; border-radius: 12px; border-bottom: 3px solid var(--red); font-size: 12px; }
-        .feature-item b { display: block; color: var(--blue); margin-bottom: 3px; }
 
         @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
-        @keyframes textGlow { from { text-shadow: 0 0 10px var(--red); } to { text-shadow: 0 0 35px var(--red), 0 0 50px var(--red); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes borderGlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        @keyframes floatAnim { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulseAnim { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes textGlow { from { text-shadow: 0 0 10px var(--red); } to { text-shadow: 0 0 35px var(--red); } }
     </style>
 </head>
 <body>
+
+    <div id="adminPanel">
+        <div class="admin-box">
+            <h2>🛠 إدارة الأزرار والروابط</h2>
+            <div id="buttonsEditor"></div>
+            <button class="add-btn" onclick="addNewButton()">+ إضافة زر جديد</button>
+            <div class="admin-actions">
+                <button class="save-btn" onclick="saveAdminData()">حفظ التعديلات نهائياً ✅</button>
+                <button class="save-btn" style="background:#444;" onclick="closeAdmin()">إغلاق</button>
+            </div>
+        </div>
+    </div>
 
     <div id="landingPage">
         <div class="logo-container">
             <img src="https://i.ibb.co/KcBy799V/IMG-20260124-WA0104.jpg" class="new-logo-rect" alt="Helmy Card Logo">
         </div>
-        
         <h1 class="brand-name">Helmy Card</h1>
-        <span class="hype-text-big">استعد للسيطرة على اللعبة!</span>
+        <span class="hype-text-big" style="color:var(--gold); font-size:22px; font-weight:900; display:block; margin:15px 0 10px;">استعد للسيطرة على اللعبة!</span>
         <p style="font-size:14px; color:#ccc; margin-bottom:25px;">أمان مطلق.. سرعة خيالية.. ومصداقية ملوك.</p>
-        
         <div onclick="enterApp()">
             <div class="btn-wrapper"></div>
             <p style="font-size:12px; margin-top:15px; color:var(--silver); font-weight: bold;">اضغط على الاسم لفتح بوابة القوة</p>
@@ -141,59 +136,73 @@
     </div>
 
     <div id="mainContent">
-        <h1 style="font-family:'Nosifer'; font-size: 32px; color: var(--silver); margin: 0; text-shadow: 0 0 15px var(--red);">Helmy Card</h1>
+        <h1 onclick="askAdmin()" id="mainTitle" style="font-family:'Nosifer'; font-size: 32px; color: var(--silver); margin: 0; text-shadow: 0 0 15px var(--red); cursor:pointer;">Helmy Card</h1>
         <p style="color:var(--gold); font-weight:900; margin: 10px 0 25px 0;">شحن الملوك وسحب المحترفين</p>
 
-        <div class="container">
-            <div class="glow-btn-box" style="--border-color: var(--blue);">
-                <a href="https://helmy-card.com/" class="inner-btn">متجرنا الالكتروني لشحن جميع التطبيقات</a>
-            </div>
-            <p class="btn-hint">شحن فوري وآمن لجميع الألعاب العالمية 🚀</p>
+        <div class="container" id="buttonsContainer"></div>
 
-            <div class="glow-btn-box">
-                <a href="https://helmy-ccard-xena-live.vercel.app/" class="inner-btn">سحب رواتب اكسينا</a>
-            </div>
-            <p class="btn-hint">استلم أرباحك بأفضل سعر صرف في السوق 💸</p>
-
-            <div class="glow-btn-box">
-                <a href="https://helmy-card-pota.vercel.app/" class="inner-btn">سحب رواتب بوتا</a>
-            </div>
-            <p class="btn-hint">نضمن لك وصول راتبك في دقائق معدودة 🔒</p>
-
-            <div class="glow-btn-box">
-                <a href="https://helmy-ccard-karak-chat.vercel.app/" class="inner-btn">سحب رواتب كرك</a>
-            </div>
-            <p class="btn-hint">ثقة لا تنتهي ومصداقية تتحدث عن نفسها 👑</p>
-
-            <div class="glow-btn-box">
-                <a href="https://helmy-ccard-junko.vercel.app/" class="inner-btn">سحب رواتب جانكو</a>
-            </div>
-            <p class="btn-hint">الخيار الأول والآمن لجميع وكالات جانكو 🏦</p>
-
-            <div class="glow-btn-box" style="--border-color: var(--green);">
-                <a href="https://wa.me/201211511517" class="inner-btn" style="color: var(--green);">تواصل مع خدمة العملاء</a>
-            </div>
-            <p class="btn-hint">فريق الدعم الفني معك على مدار الساعة 📞</p>
-
-            <div class="glow-btn-box" style="--border-color: #1877f2;">
-                <a href="https://www.facebook.com/share/16Jnr1rrGn/" class="inner-btn" style="color: #1877f2;">فيس بوك</a>
-            </div>
-            <p class="btn-hint">تابعنا لتكون أول من يعرف العروض الجديدة 🔵</p>
-
-            <div class="trust-section">
-                <h3 style="color:var(--gold); margin-bottom:15px;">لماذا نحن الأفضل بلا منازع؟</h3>
-                <div class="feature-grid">
-                    <div class="feature-item"><b>أمان حديدي</b>حسابك محمي بنظام تشفير عالمي</div>
-                    <div class="feature-item"><b>سرعة البرق</b>استلم شحنك في أقل من 3 دقائق</div>
-                    <div class="feature-item"><b>أوفر سعر</b>تحدي الأسعار يبدأ من عندنا</div>
-                    <div class="feature-item"><b>دعم ملكي</b>فريقنا معك لحظة بلحظة</div>
-                </div>
-                <p style="font-size:12px; margin-top:15px; font-weight:bold;">انضم لآلاف العملاء الذين وضعوا ثقتهم في "حلمي كارد"</p>
+        <div class="trust-section">
+            <h3 style="color:var(--gold); margin-bottom:15px;">لماذا نحن الأفضل بلا منازع؟</h3>
+            <div class="feature-grid">
+                <div class="feature-item"><b style="color:var(--blue); display:block; margin-bottom:3px;">أمان حديدي</b>حسابك محمي بنظام تشفير عالمي</div>
+                <div class="feature-item"><b style="color:var(--blue); display:block; margin-bottom:3px;">سرعة البرق</b>استلم شحنك في أقل من 3 دقائق</div>
+                <div class="feature-item"><b style="color:var(--blue); display:block; margin-bottom:3px;">أوفر سعر</b>تحدي الأسعار يبدأ من عندنا</div>
+                <div class="feature-item"><b style="color:var(--blue); display:block; margin-bottom:3px;">دعم ملكي</b>فريقنا معك لحظة بلحظة</div>
             </div>
         </div>
     </div>
 
     <script>
+        // --- تهيئة Firebase الخاصة بك ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaySpLeaNibvi0KFh0Uo4v5PM1LPDyikI",
+            authDomain: "helmy-card-b7551.firebaseapp.com",
+            projectId: "helmy-card-b7551",
+            storageBucket: "helmy-card-b7551.firebasestorage.app",
+            messagingSenderId: "276444044639",
+            appId: "1:276444044639:web:5a8387aa39517d1d1d2aea",
+            databaseURL: "https://helmy-card-b7551-default-rtdb.firebaseio.com"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let buttonsData = [];
+
+        // جلب البيانات من السحاب أول مرة
+        db.ref('helmy_links').on('value', (snap) => {
+            const data = snap.val();
+            if(data) {
+                buttonsData = data;
+                renderButtons();
+            } else {
+                // لو السحاب فاضي، يحط الداتا الأصلية اللي في كودك
+                buttonsData = [
+                    { name: "متجرنا الالكتروني لشحن جميع التطبيقات", url: "https://helmy-card.com/", color: "var(--blue)", hint: "شحن فوري وآمن لجميع الألعاب العالمية 🚀" },
+                    { name: "سحب رواتب اكسينا", url: "https://helmy-ccard-xena-live.vercel.app/", color: "var(--red)", hint: "استلم أرباحك بأفضل سعر صرف في السوق 💸" },
+                    { name: "سحب رواتب بوتا", url: "https://helmy-card-pota.vercel.app/", color: "var(--red)", hint: "نضمن لك وصول راتبك في دقائق معدودة 🔒" },
+                    { name: "سحب رواتب كرك", url: "https://helmy-ccard-karak-chat.vercel.app/", color: "var(--red)", hint: "ثقة لا تنتهي ومصداقية تتحدث عن نفسها 👑" },
+                    { name: "سحب رواتب جانكو", url: "https://helmy-ccard-junko.vercel.app/", color: "var(--red)", hint: "الخيار الأول والآمن لجميع وكالات جانكو 🏦" },
+                    { name: "تواصل مع خدمة العملاء", url: "https://wa.me/201211511517", color: "var(--green)", hint: "فريق الدعم الفني معك على مدار الساعة 📞" },
+                    { name: "فيس بوك", url: "https://www.facebook.com/share/16Jnr1rrGn/", color: "#1877f2", hint: "تابعنا لتكون أول من يعرف العروض الجديدة 🔵" }
+                ];
+                db.ref('helmy_links').set(buttonsData);
+            }
+        });
+
+        function renderButtons() {
+            const container = document.getElementById('buttonsContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            buttonsData.forEach(btn => {
+                container.innerHTML += `
+                    <div class="glow-btn-box" style="--border-color: ${btn.color};">
+                        <a href="${btn.url}" class="inner-btn">${btn.name}</a>
+                    </div>
+                    <p class="btn-hint">${btn.hint}</p>
+                `;
+            });
+        }
+
         function enterApp() {
             document.getElementById('landingPage').style.opacity = '0';
             setTimeout(() => {
@@ -203,6 +212,53 @@
                 setTimeout(() => { main.style.opacity = '1'; }, 50);
             }, 800);
         }
+
+        function askAdmin() {
+            if (prompt("كلمة سر الإدارة:") === "1997") openAdmin();
+        }
+
+        function openAdmin() {
+            document.getElementById('adminPanel').style.display = 'block';
+            const editor = document.getElementById('buttonsEditor');
+            editor.innerHTML = '';
+            buttonsData.forEach((btn, index) => {
+                editor.innerHTML += `
+                    <div class="btn-entry">
+                        <input class="admin-input" type="text" value="${btn.name}" onchange="updateBtn(${index}, 'name', this.value)" placeholder="اسم الزر">
+                        <input class="admin-input" type="text" value="${btn.url}" onchange="updateBtn(${index}, 'url', this.value)" placeholder="الرابط">
+                        <input class="admin-input" type="text" value="${btn.hint}" onchange="updateBtn(${index}, 'hint', this.value)" placeholder="الوصف الصغير">
+                        <select class="admin-input" onchange="updateBtn(${index}, 'color', this.value)">
+                            <option value="var(--red)" ${btn.color === 'var(--red)' ? 'selected' : ''}>أحمر</option>
+                            <option value="var(--blue)" ${btn.color === 'var(--blue)' ? 'selected' : ''}>أزرق</option>
+                            <option value="var(--green)" ${btn.color === 'var(--green)' ? 'selected' : ''}>أخضر</option>
+                            <option value="#1877f2" ${btn.color === '#1877f2' ? 'selected' : ''}>فيس بوك</option>
+                        </select>
+                        <button onclick="deleteBtn(${index})" style="background:none; color:red; border:none; cursor:pointer; font-size:12px; margin-top:5px;">🗑 حذف الزر</button>
+                    </div>
+                `;
+            });
+        }
+
+        function updateBtn(index, field, value) { buttonsData[index][field] = value; }
+
+        function deleteBtn(index) {
+            buttonsData.splice(index, 1);
+            openAdmin();
+        }
+
+        function addNewButton() {
+            buttonsData.push({ name: "زر جديد", url: "#", color: "var(--red)", hint: "وصف الزر الجديد" });
+            openAdmin();
+        }
+
+        function saveAdminData() {
+            db.ref('helmy_links').set(buttonsData).then(() => {
+                alert("تم الحفظ في السحاب بنجاح ✅");
+                closeAdmin();
+            });
+        }
+
+        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
     </script>
 </body>
 </html>
